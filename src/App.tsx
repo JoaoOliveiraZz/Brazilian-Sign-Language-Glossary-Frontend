@@ -12,6 +12,8 @@ function App() {
 
   async function fetchCategories() {
     const response = await axios.get("https://bsl-deploy.onrender.com/category");
+
+    console.log(response.data.length)
     
     if(response.data.length > 0){
       setCategories(response.data);
@@ -26,7 +28,7 @@ function App() {
 
   return (
     <>
-      <div className="flex w-screen justify-between px-[145px] items-center py-3">
+      <div className="flex w-full justify-between px-[145px] items-center py-3">
         <p>Glossário de libras</p>
 
         <div className="flex gap-8 items-center">
@@ -53,7 +55,7 @@ function App() {
         </button>
       </div>
 
-      <div className="px-[154px] flex gap-6">
+      <div className="px-[154px] flex gap-6 max-w-full flex-wrap">
         {
           categories.map(category => {
             return (
