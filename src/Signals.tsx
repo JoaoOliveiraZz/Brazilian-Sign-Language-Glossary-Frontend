@@ -1,10 +1,12 @@
 import axios from "axios"
 import { CrossIcon, LogOut, User, } from "lucide-react"
 import { useEffect, useState } from "react"
-import { signal } from "./utils/signals";
+import { signal } from "./utils/signals"
+import Modal from './Modal.tsx'
+import React from "react"
 
 function Signals() {
-
+  const [estado, setEstado] = React.useState(false);
   const [signals, setSignals] = useState<signal[]>([]);
 
   console.log(signals)
@@ -49,11 +51,13 @@ function Signals() {
 
       <div className="px-[145px] flex justify-between py-8">
         <h1>Categoria</h1>
-        <button className="bg-green-500 rounded-md px-4 py-2 text-white flex gap-2 items-center">
+        <button className="bg-green-500 rounded-md px-4 py-2 text-white flex gap-2 items-center" >
           Sugerir novo sinal
           <CrossIcon size={20} />
         </button>
       </div>
+
+      {estado && <Modal />}
 
       <div className="px-[154px] flex gap-6 max-w-full flex-wrap">
         {
@@ -66,9 +70,10 @@ function Signals() {
                     {signal.description}
                   </p>
                 </div>
-                <button className="bg-green-500 px-6 py-1 rounded-md text-white">
+                <button className="bg-green-500 px-6 py-1 rounded-md text-white" onClick={() => setEstado(!estado)}>
                   Visualizar
                 </button>
+
               </div>
             )
           })
