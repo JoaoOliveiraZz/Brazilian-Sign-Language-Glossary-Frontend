@@ -1,6 +1,5 @@
 import { X } from "lucide-react"
 import { signal } from "../utils/signals"
-import React from "react"
 
 interface ModalProps {
   signal: signal | undefined;
