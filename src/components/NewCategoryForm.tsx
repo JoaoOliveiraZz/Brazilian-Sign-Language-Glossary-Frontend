@@ -1,5 +1,6 @@
 import axios from "axios";
 import { FormEvent, useState } from "react"
+import { Link } from "react-router-dom";
 
 interface Category {
     name: string
@@ -58,7 +59,7 @@ export function NewCategoryForm(){
                     />
                     <div className="flex gap-2">
                         <button type="submit" className="bg-emerald-700 text-gray-200 rounded-lg h-12 flex-1">Cadastrar</button>
-                        <button className="flex-1 bg-gray-400 rounded-lg">Cancelar</button>
+                        <Link to={"/"} className="flex-1 bg-gray-400 rounded-lg flex items-center justify-center">Cancelar</Link>
                     </div>
                 </form>
             </div>

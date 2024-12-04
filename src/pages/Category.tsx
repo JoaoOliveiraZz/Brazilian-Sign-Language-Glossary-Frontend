@@ -36,10 +36,10 @@ export function Category() {
         <p>Glossário de libras</p>
 
         <div className="flex gap-8 items-center">
-        <button className="bg-green-600 rounded-md px-4 py-2 text-white flex gap-2 items-center">
+        <Link to={"/newCategory"} className="bg-green-600 rounded-md px-4 py-2 text-white flex gap-2 items-center">
           Sugerir nova categoria
           <CrossIcon size={20} />
-        </button>
+        </Link>
         </div>
       </div>
 

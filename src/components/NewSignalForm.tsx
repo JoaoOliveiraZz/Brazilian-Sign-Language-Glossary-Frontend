@@ -111,7 +111,7 @@ export function NewSignalForm(){
                     />
                     <div className="flex gap-2">
                         <button type="submit" className="bg-emerald-700 text-gray-200 rounded-lg h-12 flex-1">Cadastrar</button>
-                        <button className="flex-1 bg-gray-400 rounded-lg">Cancelar</button>
+                        <button onClick={() => window.history.back()} className="flex-1 bg-gray-400 rounded-lg">Cancelar</button>
                     </div>
                 </form>
             </div>

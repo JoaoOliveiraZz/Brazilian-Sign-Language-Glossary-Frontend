@@ -3,7 +3,7 @@ import { CrossIcon, Search  } from "lucide-react"
 import { useEffect, useState } from "react"
 import { signal } from "../utils/signals"
 import { Modal } from '../components/Modal'
-import { useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 
 export function Signals() {
   const [modalIsVisible, setModalIsVisible] = useState(false);
@@ -47,10 +47,10 @@ export function Signals() {
         <p>Glossário de libras</p>
 
         <div className="flex gap-8 items-center">
-        <button className="bg-green-600 rounded-md px-4 py-2 text-white flex gap-2 items-center">
+        <Link to={"/newSignal"} className="bg-green-600 rounded-md px-4 py-2 text-white flex gap-2 items-center">
           Sugerir novo sinal
           <CrossIcon size={20} />
-        </button>
+        </Link>
         </div>
       </div>
 
