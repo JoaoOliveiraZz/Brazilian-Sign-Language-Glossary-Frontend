@@ -7,8 +7,8 @@ export interface category {
 
 export const categories: Array<category> = [
     {
-        id: '1923891283',
-        name: "Informática",
+        id: '11283',
+        name: "Inf92389ormática",
         description: "Uma coletânea de sinais referentes à área da informática",
     },
     {

@@ -3,6 +3,7 @@ import { CrossIcon, Search  } from "lucide-react"
 import { useEffect, useState } from "react"
 import { signal } from "../utils/signals"
 import { Modal } from '../components/Modal'
+import { useParams } from "react-router-dom"
 
 export function Signals() {
   const [modalIsVisible, setModalIsVisible] = useState(false);
@@ -10,6 +11,8 @@ export function Signals() {
   const [signals, setSignals] = useState<signal[]>([]);
   const [selectedSignal, setSelectedSignal] = useState<signal>()
   const [search, setSearch] = useState<string>("")
+
+  const {categoryId} = useParams<{categoryId: string}>();
 
   function closeModal(){
     setModalIsVisible(false);
@@ -20,7 +23,7 @@ export function Signals() {
   }
 
   async function fetchSignals() {
-    const response = await axios.get("https://bsl-deploy.onrender.com/signals");
+    const response = await axios.get("https://bsl-deploy.onrender.com/signals/"+categoryId);
 
     if (response.data.length > 0) {
       setOriginalSignals(response.data);

@@ -2,6 +2,7 @@ import axios from "axios"
 import { CrossIcon, Search  } from "lucide-react"
 import { useEffect, useState } from "react"
 import { category } from "../utils/categories";
+import { Link } from "react-router-dom";
 
 export function Category() {
 
@@ -66,9 +67,9 @@ export function Category() {
                     {category.description}
                   </p>
                 </div>
-                <button className="bg-gray-300 px-6 py-1 rounded-md">
+                <Link className="bg-gray-300 px-6 py-1 rounded-md text-center" to= {`/signals/${category.id}`}>
                   Sinais
-                </button>
+                </Link>
               </div>
             )
           })
