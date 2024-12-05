@@ -13,7 +13,7 @@ export function Modal({signal, onClose} : ModalProps) {
   return (
     <>
       <div className="h-screen w-screen right-0 top-0 fixed bg-black/30 flex justify-center items-center">
-        <div className="h-1/2 w-1/2 bg-white rounded-lg shadow-md">
+        <div className="min-h-[50%] w-1/2 bg-white rounded-lg shadow-md">
           <div className="">
             <header className="flex justify-between items-center px-3 py-1">
               <h1 className="text-xl font-bold">

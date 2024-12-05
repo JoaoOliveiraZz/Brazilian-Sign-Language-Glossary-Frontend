@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { category } from "../utils/categories";
 import { Link } from "react-router-dom";
 import { LoadingSpinner } from "../components/LoadingSpinner";
+import { EmptyRegisters } from "../components/EmptyRegisters";
 
 export function Category() {
 
@@ -11,6 +12,7 @@ export function Category() {
   const [search, setSearch] = useState<string>("");
   const [originalCategories, setOriginalCategories] = useState<category[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isEmpty, setIsEmpty] = useState<boolean>(false)
 
 
   async function fetchCategories() {
@@ -22,7 +24,7 @@ export function Category() {
       setOriginalCategories(response.data)
       setIsLoading(false);
     }else{
-      setCategories(categories);
+      setIsEmpty(true);
       setIsLoading(false);
     }
   }
@@ -36,7 +38,7 @@ export function Category() {
   }, [search])
 
   return (
-    <main className="h-screen flex flex-col">
+     <main className="h-screen flex flex-col">
       <div className="flex w-full justify-between px-[145px] items-center py-3">
         <p>Glossário de libras</p>
 
@@ -54,14 +56,25 @@ export function Category() {
           <Search size={18}/>
           <input 
             type="text"
-            placeholder="buscar categoria"
+            placeholder="Buscar categoria"
             className="bg-transparent placeholder:text-black text-black outline-none"
             onChange={(event) => setSearch(event.target.value)}
           />
         </div>
       </div>
       {
-        isLoading ? 
+        isEmpty ?
+        (
+          <div className="flex flex-1 flex-col justify-center items-center gap-5">
+            <EmptyRegisters
+              title="Parece que ainda não existem categorias"
+              linkHref="/newCategory" 
+              linkLabel="Comece sugerindo novas categorias"
+            />
+          </div>
+        )
+        :
+        isLoading ?
         (
           <div className="flex flex-col gap-2 flex-1 justify-center items-center">
             <LoadingSpinner />
@@ -73,14 +86,15 @@ export function Category() {
             {
               categories.map(category => {
                 return (
-                  <div className="bg-gray-400 rounded-lg px-8 py-4 flex flex-col gap-10 w-[368px]" key={category.id}>
+                  <div className="bg-gray-300 rounded-lg px-8 py-4 flex flex-col gap-10 w-[368px]" key={category.id}>
                     <div className="flex flex-col text-black gap-1 max-w-1/2">
-                      <span>{category.name}</span>
+                      <span className="text-lg font-semibold">{category.name}</span>
+                      <div className="w-full h-px bg-gray-400" />
                       <p>
                         {category.description}
                       </p>
                     </div>
-                    <Link className="bg-gray-300 px-6 py-1 rounded-md text-center" to= {`/signals/${category.id}`}>
+                    <Link className="bg-gray-400 px-6 py-1 rounded-md text-center" to= {`/signals/${category.id}`}>
                       Sinais
                     </Link>
                   </div>

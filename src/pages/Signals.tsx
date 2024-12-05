@@ -5,6 +5,7 @@ import { signal } from "../utils/signals"
 import { Modal } from '../components/Modal'
 import { Link, useParams } from "react-router-dom"
 import { LoadingSpinner } from "../components/LoadingSpinner"
+import { EmptyRegisters } from "../components/EmptyRegisters"
 
 export function Signals() {
   const [modalIsVisible, setModalIsVisible] = useState(false);
@@ -13,6 +14,7 @@ export function Signals() {
   const [selectedSignal, setSelectedSignal] = useState<signal>()
   const [search, setSearch] = useState<string>("")
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isEmpty, setIsEmpty] = useState<boolean>(false)
 
   const {categoryId} = useParams<{categoryId: string}>();
 
@@ -32,6 +34,8 @@ export function Signals() {
       setIsLoading(false);
       setOriginalSignals(response.data);
       setSignals(response.data)
+    }else{
+      setIsEmpty(true)
     }
   }
 
@@ -64,7 +68,7 @@ export function Signals() {
           <Search size={18}/>
           <input 
             type="text"
-            placeholder="buscar sinal"
+            placeholder="Buscar sinal"
             className="bg-transparent placeholder:text-black text-black outline-none"
             onChange={(event) => setSearch(event.target.value)}
           />
@@ -72,6 +76,17 @@ export function Signals() {
       </div>
 
       {
+        isEmpty ?
+        (
+          <div className="flex flex-1 flex-col justify-center items-center gap-5">
+            <EmptyRegisters
+              title="Parece que ainda não existem sinais"
+              linkHref="/newSignal" 
+              linkLabel="Comece sugerindo novos sinais"
+            />
+          </div>
+        )
+        :
         isLoading ?
         (
           <div className="flex flex-col gap-2 flex-1 justify-center items-center">
@@ -86,7 +101,7 @@ export function Signals() {
             {
               signals.map(signal => {
                 return (
-                  <div className="bg-gray-400 rounded-lg px-8 py-4 flex flex-col gap-10 w-[368px]" key={signal.id}>
+                  <div className="bg-gray-300 rounded-lg px-8 py-4 flex flex-col gap-10 w-[368px]" key={signal.id}>
                     <div className="flex flex-col text-black gap-1 max-w-1/2">
                       <span>{signal.name}</span>
                       <p>
@@ -94,7 +109,7 @@ export function Signals() {
                       </p>
                     </div>
                     <button 
-                      className="bg-green-500 px-6 py-1 rounded-md text-white" 
+                      className="bg-gray-400 px-6 py-1 rounded-md text-center" 
                       onClick={() => {
                         openModal();
                         setSelectedSignal(signal);
