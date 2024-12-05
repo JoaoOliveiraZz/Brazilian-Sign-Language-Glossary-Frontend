@@ -1,5 +1,5 @@
 import axios from "axios"
-import { CrossIcon, Search  } from "lucide-react"
+import { CrossIcon, Search, BookOpen} from "lucide-react"
 import { useEffect, useState } from "react"
 import { category } from "../utils/categories";
 import { Link } from "react-router-dom";
@@ -37,11 +37,26 @@ export function Category() {
     setCategories(originalCategories.filter(category => category.name.includes(search)))
   }, [search])
 
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+
+    useEffect(() => {
+    const handleResize = () => setScreenWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+  const getIconSize = () => {
+    if (screenWidth >= 1200) return 64;
+    if (screenWidth >= 768) return 32;
+    return 32;
+  };
+
   return (
      <main className="h-screen flex flex-col">
       <div className="flex w-full justify-between px-[145px] items-center py-3">
-        <p>Glossário de libras</p>
-
+        <div className="flex flex-row gap-2">
+          <BookOpen className="text-green-500" size={getIconSize()}/>
+          <p className="text-green-500 font-bold text-1xl lg:text-5xl">Glossário de Libras</p>
+        </div>
         <div className="flex gap-8 items-center">
         <Link to={"/newCategory"} className="bg-green-600 rounded-md px-4 py-2 text-white flex gap-2 items-center">
           Sugerir nova categoria
@@ -51,7 +66,7 @@ export function Category() {
       </div>
 
       <div className="px-[145px] flex justify-between py-8">
-        <h1>Categorias</h1>
+        <h1 className="text-green-500 font-bold text-1xl lg:text-3xl">Categorias</h1>
         <div className="bg-gray-200 px-3 py-2 rounded-xl flex items-center gap-2">
           <Search size={18}/>
           <input 
