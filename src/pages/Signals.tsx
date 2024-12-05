@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { signal } from "../utils/signals"
 import { Modal } from '../components/Modal'
 import { Link, useParams } from "react-router-dom"
+import { LoadingSpinner } from "../components/LoadingSpinner"
 
 export function Signals() {
   const [modalIsVisible, setModalIsVisible] = useState(false);
@@ -11,6 +12,7 @@ export function Signals() {
   const [signals, setSignals] = useState<signal[]>([]);
   const [selectedSignal, setSelectedSignal] = useState<signal>()
   const [search, setSearch] = useState<string>("")
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const {categoryId} = useParams<{categoryId: string}>();
 
@@ -23,9 +25,11 @@ export function Signals() {
   }
 
   async function fetchSignals() {
+    setIsLoading(true);
     const response = await axios.get("https://bsl-deploy.onrender.com/signals/"+categoryId);
 
     if (response.data.length > 0) {
+      setIsLoading(false);
       setOriginalSignals(response.data);
       setSignals(response.data)
     }
@@ -42,7 +46,7 @@ export function Signals() {
 
 
   return (
-    <>
+    <main className="h-screen flex flex-col">
       <div className="flex w-full justify-between px-[145px] items-center py-3">
         <p>Glossário de libras</p>
 
@@ -67,34 +71,47 @@ export function Signals() {
         </div>
       </div>
 
+      {
+        isLoading ?
+        (
+          <div className="flex flex-col gap-2 flex-1 justify-center items-center">
+            <LoadingSpinner />
+            <span>Carregando sinais</span>
+          </div>
+        )
+        :
+        (
 
-      <div className="px-[154px] flex gap-6 max-w-full flex-wrap">
-        {
-          signals.map(signal => {
-            return (
-              <div className="bg-gray-400 rounded-lg px-8 py-4 flex flex-col gap-10 w-[368px]" key={signal.id}>
-                <div className="flex flex-col text-black gap-1 max-w-1/2">
-                  <span>{signal.name}</span>
-                  <p>
-                    {signal.description}
-                  </p>
-                </div>
-                <button 
-                  className="bg-green-500 px-6 py-1 rounded-md text-white" 
-                  onClick={() => {
-                    openModal();
-                    setSelectedSignal(signal);
-                  }}
-                >
-                    Visualizar
-                </button>
+          <div className="px-[154px] flex gap-6 max-w-full flex-wrap">
+            {
+              signals.map(signal => {
+                return (
+                  <div className="bg-gray-400 rounded-lg px-8 py-4 flex flex-col gap-10 w-[368px]" key={signal.id}>
+                    <div className="flex flex-col text-black gap-1 max-w-1/2">
+                      <span>{signal.name}</span>
+                      <p>
+                        {signal.description}
+                      </p>
+                    </div>
+                    <button 
+                      className="bg-green-500 px-6 py-1 rounded-md text-white" 
+                      onClick={() => {
+                        openModal();
+                        setSelectedSignal(signal);
+                      }}
+                    >
+                        Visualizar
+                    </button>
 
-              </div>
-            )
-          })
-        }
-      </div>
+                  </div>
+                )
+              })
+            }
+          </div>
+        )
+      }
+
       {modalIsVisible && <Modal signal={selectedSignal} onClose={closeModal} />}
-    </>
+    </main>
   )
 }

@@ -3,22 +3,27 @@ import { CrossIcon, Search  } from "lucide-react"
 import { useEffect, useState } from "react"
 import { category } from "../utils/categories";
 import { Link } from "react-router-dom";
+import { LoadingSpinner } from "../components/LoadingSpinner";
 
 export function Category() {
 
   const [categories, setCategories] = useState<category[]>([]);
-  const [search, setSearch] = useState<string>("")
-  const [originalCategories, setOriginalCategories] = useState<category[]>([])
+  const [search, setSearch] = useState<string>("");
+  const [originalCategories, setOriginalCategories] = useState<category[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
 
   async function fetchCategories() {
+    setIsLoading(true);
     const response = await axios.get("https://bsl-deploy.onrender.com/category");
     
     if(response.data.length > 0){
       setCategories(response.data);
       setOriginalCategories(response.data)
+      setIsLoading(false);
     }else{
       setCategories(categories);
+      setIsLoading(false);
     }
   }
 
@@ -31,7 +36,7 @@ export function Category() {
   }, [search])
 
   return (
-    <>
+    <main className="h-screen flex flex-col">
       <div className="flex w-full justify-between px-[145px] items-center py-3">
         <p>Glossário de libras</p>
 
@@ -55,27 +60,38 @@ export function Category() {
           />
         </div>
       </div>
+      {
+        isLoading ? 
+        (
+          <div className="flex flex-col gap-2 flex-1 justify-center items-center">
+            <LoadingSpinner />
+            <span>Carregando categorias</span>
+          </div>
+        ) :
+        (
+          <div className="px-[154px] flex gap-6 max-w-full flex-wrap">
+            {
+              categories.map(category => {
+                return (
+                  <div className="bg-gray-400 rounded-lg px-8 py-4 flex flex-col gap-10 w-[368px]" key={category.id}>
+                    <div className="flex flex-col text-black gap-1 max-w-1/2">
+                      <span>{category.name}</span>
+                      <p>
+                        {category.description}
+                      </p>
+                    </div>
+                    <Link className="bg-gray-300 px-6 py-1 rounded-md text-center" to= {`/signals/${category.id}`}>
+                      Sinais
+                    </Link>
+                  </div>
+                )
+              })
+            }
+          </div>
 
-      <div className="px-[154px] flex gap-6 max-w-full flex-wrap">
-        {
-          categories.map(category => {
-            return (
-              <div className="bg-gray-400 rounded-lg px-8 py-4 flex flex-col gap-10 w-[368px]" key={category.id}>
-                <div className="flex flex-col text-black gap-1 max-w-1/2">
-                  <span>{category.name}</span>
-                  <p>
-                    {category.description}
-                  </p>
-                </div>
-                <Link className="bg-gray-300 px-6 py-1 rounded-md text-center" to= {`/signals/${category.id}`}>
-                  Sinais
-                </Link>
-              </div>
-            )
-          })
-        }
-      </div>
-    </>
+        )
+      }
+    </main>
   )
 }
 
