@@ -37,7 +37,7 @@ export function Modal({signal, onClose} : ModalProps) {
               </div>
               <div className="">
                 <video controls={true}>
-                  <source type="video/mp4" src="https://www.ines.gov.br/dicionario-de-libras/public/media/palavras/videos/amareloSm_Prog001.mp4" />
+                  <source type="video/mp4" src={signal && signal.source} />
                 </video>
               </div>
             </main>
