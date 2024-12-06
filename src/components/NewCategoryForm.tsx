@@ -62,7 +62,7 @@ export function NewCategoryForm(){
                         }}
                     />
                     <div className="flex gap-2">
-                    <button disabled={!isLoading} type="submit" className="bg-emerald-700 text-gray-200 rounded-lg h-12 flex-1 flex items-center justify-center">
+                    <button disabled={isLoading} type="submit" className="bg-emerald-700 text-gray-200 rounded-lg h-12 flex-1 flex items-center justify-center">
                             {
                                 isLoading ?
                                 (

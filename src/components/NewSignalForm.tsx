@@ -2,6 +2,7 @@ import axios from "axios";
 import { FormEvent, useEffect, useState } from "react"
 import { category } from "../utils/categories";
 import { LoadingSpinner } from "./LoadingSpinner";
+import { Link } from "react-router-dom";
 
 interface Category {
     name: string
@@ -125,7 +126,7 @@ export function NewSignalForm(){
                         }}
                     />
                     <div className="flex gap-2">
-                        <button disabled={!isLoading} type="submit" className="bg-emerald-700 text-gray-200 rounded-lg h-12 flex-1 flex items-center justify-center">
+                        <button disabled={isLoading} type="submit" className="bg-emerald-700 text-gray-200 rounded-lg h-12 flex-1 flex items-center justify-center">
                             {
                                 isLoading ?
                                 (
@@ -136,7 +137,7 @@ export function NewSignalForm(){
                                 )
                             }
                         </button>
-                        <button onClick={() => window.history.back()} className="flex-1 bg-gray-400 rounded-lg">Cancelar</button>
+                        <Link to={"/"} className="flex-1 bg-gray-400 rounded-lg flex items-center justify-center">Cancelar</Link>
                     </div>
                 </form>
             </div>
