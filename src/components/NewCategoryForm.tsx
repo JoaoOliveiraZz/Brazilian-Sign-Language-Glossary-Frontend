@@ -1,6 +1,7 @@
 import axios from "axios";
 import { FormEvent, useState } from "react"
 import { Link } from "react-router-dom";
+import { LoadingSpinner } from "./LoadingSpinner";
 
 interface Category {
     name: string
@@ -13,16 +14,19 @@ export function NewCategoryForm(){
         name: "",
         description: ""
     });
+    const [isLoading, setIsLoading] = useState<boolean>(false)
 
     async function SubmitNewCategory(event: FormEvent<HTMLFormElement>){
 
         event.preventDefault();
 
         if(newCategoryForm.name && newCategoryForm.description){
+            setIsLoading(true)
             const response = await axios.post("https://bsl-deploy.onrender.com/category", newCategoryForm);
 
             if(response.status === 201){
-                alert("Deu certo, pabens")
+                setIsLoading(false)
+                alert("Nova categoria criada com sucesso")
             }
         }
 
@@ -58,7 +62,17 @@ export function NewCategoryForm(){
                         }}
                     />
                     <div className="flex gap-2">
-                        <button type="submit" className="bg-emerald-700 text-gray-200 rounded-lg h-12 flex-1">Cadastrar</button>
+                    <button disabled={!isLoading} type="submit" className="bg-emerald-700 text-gray-200 rounded-lg h-12 flex-1 flex items-center justify-center">
+                            {
+                                isLoading ?
+                                (
+                                    <LoadingSpinner size="h-8 w-8" />
+                                ):
+                                (
+                                    <span>Cadastrar</span>
+                                )
+                            }
+                        </button>
                         <Link to={"/"} className="flex-1 bg-gray-400 rounded-lg flex items-center justify-center">Cancelar</Link>
                     </div>
                 </form>

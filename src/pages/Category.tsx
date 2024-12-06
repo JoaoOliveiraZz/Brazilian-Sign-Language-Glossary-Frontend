@@ -92,7 +92,7 @@ export function Category() {
         isLoading ?
         (
           <div className="flex flex-col gap-2 flex-1 justify-center items-center">
-            <LoadingSpinner />
+            <LoadingSpinner size="h-14 w-14" />
             <span>Carregando categorias</span>
           </div>
         ) :

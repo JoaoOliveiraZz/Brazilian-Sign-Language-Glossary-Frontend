@@ -1,6 +1,7 @@
 import axios from "axios";
 import { FormEvent, useEffect, useState } from "react"
 import { category } from "../utils/categories";
+import { LoadingSpinner } from "./LoadingSpinner";
 
 interface Category {
     name: string
@@ -18,18 +19,23 @@ export function NewSignalForm(){
         CategoryId: ""
     });
     const [categories, setCategories] = useState<category[]>([]);
-
-    console.log(newSignalForm)
+    const [categorySelected, setCategorySelected] = useState<{categoryId: string, name: string}>({
+        categoryId: "",
+        name: ""
+    });
+    const [isLoading, setIsLoading] = useState<boolean>(false)
 
     async function SubmitNewCategory(event: FormEvent<HTMLFormElement>){
 
         event.preventDefault();
 
         if(newSignalForm.name && newSignalForm.description && newSignalForm.source && newSignalForm.CategoryId){
+            setIsLoading(true)
             const response = await axios.post("https://bsl-deploy.onrender.com/signal", newSignalForm);
 
             if(response.status === 201){
-                alert("Deu certo, pabens")
+                setIsLoading(false)
+                alert("Novo sinal criado com sucesso")
             }
         }
 
@@ -82,18 +88,27 @@ export function NewSignalForm(){
                     />
                     <select 
                         name="categorySelected" 
-                        value={"Cores"} 
+                        value={categorySelected.categoryId} 
                         className="bg-gray-200 py-1 px-2 rounded-lg"
-                        onChange={(e) => setNewSignalForm({
-                            ...newSignalForm,
-                            CategoryId: e.target.value
-                        })}
+                        onChange={(e) => {
+                            setNewSignalForm({
+                                ...newSignalForm,
+                                CategoryId: e.target.value
+                            })
+                            const {value, textContent} = e.target
+                            if(value && textContent){
+                                setCategorySelected({
+                                    name: textContent,
+                                    categoryId: value
+                                })
+                            }
+                        }}
                     >
                         <option value={""}>Selecione a categoria</option>
                         {
                             categories.map((category) => {
                                 return (
-                                    <option key={category.id} value={category.id}>{category.name}</option>
+                                    <option key={category.id} value={category.id} id={category.name}>{category.name}</option>
                                 )
                             })
                         }
@@ -110,7 +125,17 @@ export function NewSignalForm(){
                         }}
                     />
                     <div className="flex gap-2">
-                        <button type="submit" className="bg-emerald-700 text-gray-200 rounded-lg h-12 flex-1">Cadastrar</button>
+                        <button disabled={!isLoading} type="submit" className="bg-emerald-700 text-gray-200 rounded-lg h-12 flex-1 flex items-center justify-center">
+                            {
+                                isLoading ?
+                                (
+                                    <LoadingSpinner size="h-8 w-8" />
+                                ):
+                                (
+                                    <span>Cadastrar</span>
+                                )
+                            }
+                        </button>
                         <button onClick={() => window.history.back()} className="flex-1 bg-gray-400 rounded-lg">Cancelar</button>
                     </div>
                 </form>
